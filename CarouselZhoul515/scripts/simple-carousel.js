@@ -1,11 +1,11 @@
-function simpleCarousel(id,carouselElement, options){
+function simpleCarousel(id, carouselElement, options){
 	this.id = id;
 	if ( (function(){
 		//validate options
 		return true;
 	})(options) ){
 		this.options = options;
-	}else{
+	} else {
 		this.options = {// set defaults
 			transitionTime : 500,
 			touchTransitionTime : 300
@@ -29,14 +29,17 @@ simpleCarousel.prototype.initialize= function(){
 
 	if( this.evaluateSlides() > 0 ){
 		this.registerClickHandlers();
+		this.registerResizeHandler();
 		this.registerTouchHandlers();
 	}
 
 	this.setOptions();
 };
+
 simpleCarousel.prototype.setOptions = function(){
 
 };
+
 simpleCarousel.prototype.evaluateSlides = function(){
 	var self = this;
 
@@ -91,6 +94,17 @@ simpleCarousel.prototype.registerClickHandlers= function(){
 		},false);
 	}
 };
+
+simpleCarousel.prototype.registerResizeHandler = function() {
+	var self = this;
+
+	window.addEventListener('resize', function(evnt) {
+		self.sliderFrameWidth = self.sliderFrame.clientWidth;
+		self.moveToIndex(self.currentSlideIndex);
+	});
+
+}
+
 simpleCarousel.prototype.registerTouchHandlers = function(){
 	var self = this;
 	this.sliderFrame.addEventListener('touchstart',function(evnt){
@@ -122,6 +136,7 @@ simpleCarousel.prototype.startTouch = function(evnt){
 	this.touchStartPosition.x = evnt.touches[0].pageX;
 	this.touchStartPosition.y = evnt.touches[0].pageY;
 };
+
 simpleCarousel.prototype.moveTouch = function(evnt){
 
 	this.touchLatestPosition.x =  evnt.touches[0].pageX;
@@ -134,6 +149,7 @@ simpleCarousel.prototype.moveTouch = function(evnt){
 	this.sliderContentHolder.style.transition = 'none';
 	this.sliderContentHolder.style.transform = `translateX(-${newLeftMargin}px)`;
 };
+
 simpleCarousel.prototype.endTouch = function(){
 	var self = this;
 	var nextIndex = this.currentSlideIndex;
@@ -154,6 +170,7 @@ simpleCarousel.prototype.endTouch = function(){
 	},this.options.touchTransitionTime);
 	this.sliderContentHolder.style.transform = `translateX(-${nextIndex*this.sliderFrameWidth}px)`;
 };
+
 simpleCarousel.prototype.moveToIndex = function(nextIndex){
 	var self = this;
 	var sliderWidth = this.sliderFrameWidth;

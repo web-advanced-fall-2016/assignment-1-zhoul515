@@ -65,7 +65,6 @@
    list-style: none;
    cursor: pointer;
    z-index: 650;
-   background-image: url("../img/Left.png");
 }
 
 #arrow-right {   width: 50px;
@@ -77,5 +76,4 @@
    list-style: none;
    cursor: pointer;
    z-index: 650;
-   background-image: url("../img/Right.png");
 }
